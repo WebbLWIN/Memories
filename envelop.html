@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffebee;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        
+        .envelope-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            cursor: pointer;
+        }
+        
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #e53935;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+            transition: all 0.5s ease;
+            bottom: 0;
+        }
+        
+        .envelope:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #c62828;
+            transform-origin: top;
+            transition: all 0.5s ease;
+        }
+        
+        .letter {
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            background-color: white;
+            border-radius: 3px;
+            top: 5px;
+            left: 5%;
+            transition: all 0.5s ease;
+            z-index: 1;
+            padding: 15px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(0);
+            overflow-y: auto;
+        }
+        
+        .heart {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            color: #e53935;
+            font-size: 60px;
+            z-index: 3;
+            transition: all 0.5s ease;
+        }
+        
+        .open .envelope {
+            transform: translateY(100%);
+        }
+        
+        .open .envelope:before {
+            transform: rotateX(180deg);
+        }
+        
+        .open .letter {
+            transform: translateY(-110px);
+        }
+        
+        .open .heart {
+            transform: translate(-50%, -100%) scale(1);
+        }
+        
+        .letter-content {
+            opacity: 0;
+            transition: opacity 0.5s ease 0.5s;
+        }
+        
+        .open .letter-content {
+            opacity: 1;
+        }
+        
+        h2 {
+            color: #e53935;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            color: #333;
+            line-height: 1.5;
+            text-align: center;
+        }
+        
+        .signature {
+            font-style: italic;
+            text-align: right;
+            margin-top: 15px;
+        }
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .heart-particle {
+            position: absolute;
+            font-size: 20px;
+            color: #e53935;
+            opacity: 0;
+            animation: heart-fall linear;
+        }
+        
+        @keyframes heart-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        audio{
+            width: 200px;
+            height: 20px;
+            margin-left: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="envelope-container" id="envelope">
+        <div class="heart">❤</div>
+        <div class="envelope"></div>
+        <div class="letter">
+            <div class="letter-content">
+                <h2>Dear Myat Noe</h2>
+                <p>I know we've been broken up for two years, and that's a long time. But I've never forgotten you ,not even for a single day.</p>
+                <p>If I get the chance,I want to be your boyfriend again. But if I don't, I'll slowly let you go.You're still in my heart even now and I'm still in love with you.</p>
+                <div class="signature">Waiting for you ,<br>Lwin</div><br>
+                <audio controls>
+                    <source src="audio/Love.mp3" type="audio/mp3">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+    </div>
+    <div class="hearts" id="hearts"></div>
+    <script>
+        const envelope = document.getElementById('envelope');
+        const heartsContainer = document.getElementById('hearts');
+        
+        envelope.addEventListener('click', function() {
+            this.classList.toggle('open');
+            
+            // Reset animation if clicked again
+            if (!this.classList.contains('open')) {
+                this.classList.remove('open');
+                void this.offsetWidth; // Trigger reflow
+                this.classList.add('open');
+            }
+                        // Create floating hearts
+              createHearts();
+        });
+        function createHearts() {
+            // Clear previous hearts
+            heartsContainer.innerHTML = '';
+            
+            // Create 30 hearts
+           for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart-particle');
+                    heart.innerHTML = '❤';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+                    heartsContainer.appendChild(heart);
+                    
+                    // Remove heart after animation
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 5000);
+                }, i * 100);
+            }
+        }
+    </script>
+</body>
+</html>
